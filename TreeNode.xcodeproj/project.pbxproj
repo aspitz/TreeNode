@@ -22,7 +22,13 @@
 		79ABEC4D1716732700BD5446 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79ABEC271716732700BD5446 /* UIKit.framework */; };
 		79ABEC4E1716732700BD5446 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79ABEC291716732700BD5446 /* Foundation.framework */; };
 		79ABEC561716732700BD5446 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 79ABEC541716732700BD5446 /* InfoPlist.strings */; };
-		79ABEC591716732700BD5446 /* TreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC581716732700BD5446 /* TreeNodeTests.m */; };
+		79ABEC641716733600BD5446 /* ZTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC631716733600BD5446 /* ZTreeNode.m */; };
+		79ABEC651716733600BD5446 /* ZTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC631716733600BD5446 /* ZTreeNode.m */; };
+		79ABEC681716739F00BD5446 /* ZTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC671716739F00BD5446 /* ZTreeNodeTests.m */; };
+		79ABEC6D1716741F00BD5446 /* NSArray+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC6C1716741F00BD5446 /* NSArray+Utilities.m */; };
+		79ABEC6E1716741F00BD5446 /* NSArray+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC6C1716741F00BD5446 /* NSArray+Utilities.m */; };
+		79ABEC711716743900BD5446 /* NSIndexPath+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC701716743900BD5446 /* NSIndexPath+Utilities.m */; };
+		79ABEC721716743900BD5446 /* NSIndexPath+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC701716743900BD5446 /* NSIndexPath+Utilities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,10 +48,10 @@
 		79ABEC2B1716732700BD5446 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		79ABEC2F1716732700BD5446 /* TreeNode-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TreeNode-Info.plist"; sourceTree = "<group>"; };
 		79ABEC311716732700BD5446 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		79ABEC331716732700BD5446 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		79ABEC351716732700BD5446 /* TreeNode-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TreeNode-Prefix.pch"; sourceTree = "<group>"; };
-		79ABEC361716732700BD5446 /* ZAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAppDelegate.h; sourceTree = "<group>"; };
-		79ABEC371716732700BD5446 /* ZAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZAppDelegate.m; sourceTree = "<group>"; };
+		79ABEC331716732700BD5446 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		79ABEC351716732700BD5446 /* TreeNode-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "TreeNode-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		79ABEC361716732700BD5446 /* ZAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ZAppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		79ABEC371716732700BD5446 /* ZAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ZAppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		79ABEC391716732700BD5446 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		79ABEC3B1716732700BD5446 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		79ABEC3D1716732700BD5446 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -56,8 +62,14 @@
 		79ABEC4B1716732700BD5446 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		79ABEC531716732700BD5446 /* TreeNodeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TreeNodeTests-Info.plist"; sourceTree = "<group>"; };
 		79ABEC551716732700BD5446 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		79ABEC571716732700BD5446 /* TreeNodeTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TreeNodeTests.h; sourceTree = "<group>"; };
-		79ABEC581716732700BD5446 /* TreeNodeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TreeNodeTests.m; sourceTree = "<group>"; };
+		79ABEC621716733600BD5446 /* ZTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = ZTreeNode.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		79ABEC631716733600BD5446 /* ZTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 2; path = ZTreeNode.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		79ABEC661716739F00BD5446 /* ZTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = ZTreeNodeTests.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		79ABEC671716739F00BD5446 /* ZTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 2; path = ZTreeNodeTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		79ABEC6B1716741F00BD5446 /* NSArray+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Utilities.h"; sourceTree = "<group>"; };
+		79ABEC6C1716741F00BD5446 /* NSArray+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Utilities.m"; sourceTree = "<group>"; };
+		79ABEC6F1716743900BD5446 /* NSIndexPath+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+Utilities.h"; sourceTree = "<group>"; };
+		79ABEC701716743900BD5446 /* NSIndexPath+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+Utilities.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +134,8 @@
 				79ABEC3F1716732700BD5446 /* MainStoryboard.storyboard */,
 				79ABEC421716732700BD5446 /* ZViewController.h */,
 				79ABEC431716732700BD5446 /* ZViewController.m */,
+				79ABEC69171673FC00BD5446 /* Models */,
+				79ABEC6A1716740D00BD5446 /* Categories */,
 				79ABEC2E1716732700BD5446 /* Supporting Files */,
 			);
 			path = TreeNode;
@@ -144,8 +158,8 @@
 		79ABEC511716732700BD5446 /* TreeNodeTests */ = {
 			isa = PBXGroup;
 			children = (
-				79ABEC571716732700BD5446 /* TreeNodeTests.h */,
-				79ABEC581716732700BD5446 /* TreeNodeTests.m */,
+				79ABEC661716739F00BD5446 /* ZTreeNodeTests.h */,
+				79ABEC671716739F00BD5446 /* ZTreeNodeTests.m */,
 				79ABEC521716732700BD5446 /* Supporting Files */,
 			);
 			path = TreeNodeTests;
@@ -158,6 +172,26 @@
 				79ABEC541716732700BD5446 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		79ABEC69171673FC00BD5446 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				79ABEC621716733600BD5446 /* ZTreeNode.h */,
+				79ABEC631716733600BD5446 /* ZTreeNode.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		79ABEC6A1716740D00BD5446 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				79ABEC6B1716741F00BD5446 /* NSArray+Utilities.h */,
+				79ABEC6C1716741F00BD5446 /* NSArray+Utilities.m */,
+				79ABEC6F1716743900BD5446 /* NSIndexPath+Utilities.h */,
+				79ABEC701716743900BD5446 /* NSIndexPath+Utilities.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,6 +308,9 @@
 				79ABEC341716732700BD5446 /* main.m in Sources */,
 				79ABEC381716732700BD5446 /* ZAppDelegate.m in Sources */,
 				79ABEC441716732700BD5446 /* ZViewController.m in Sources */,
+				79ABEC641716733600BD5446 /* ZTreeNode.m in Sources */,
+				79ABEC6D1716741F00BD5446 /* NSArray+Utilities.m in Sources */,
+				79ABEC711716743900BD5446 /* NSIndexPath+Utilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +318,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79ABEC591716732700BD5446 /* TreeNodeTests.m in Sources */,
+				79ABEC651716733600BD5446 /* ZTreeNode.m in Sources */,
+				79ABEC681716739F00BD5446 /* ZTreeNodeTests.m in Sources */,
+				79ABEC6E1716741F00BD5446 /* NSArray+Utilities.m in Sources */,
+				79ABEC721716743900BD5446 /* NSIndexPath+Utilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +494,7 @@
 				79ABEC5E1716732700BD5446 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		79ABEC5F1716732700BD5446 /* Build configuration list for PBXNativeTarget "TreeNodeTests" */ = {
 			isa = XCConfigurationList;
@@ -462,6 +503,7 @@
 				79ABEC611716732700BD5446 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

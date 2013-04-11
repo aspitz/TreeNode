@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'TreeNode' target in the 'TreeNode' project
+// Prefix header for all source files of the 'ZTreeNode' target in the 'ZTreeNode' project
 //
 
 #import <Availability.h>
