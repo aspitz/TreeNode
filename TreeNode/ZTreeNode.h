@@ -10,6 +10,7 @@
 @class ZTreeNode;
 typedef BOOL(^FilterBlock)(ZTreeNode *treeNode, BOOL *stop);
 typedef void(^EnumerationBlock)(ZTreeNode *treeNode, BOOL *stop);
+typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch);
 
 @interface ZTreeNode : NSObject <NSCopying, NSCoding>{
     NSMutableArray *_children;
@@ -59,8 +60,8 @@ typedef void(^EnumerationBlock)(ZTreeNode *treeNode, BOOL *stop);
 - (NSArray *)flattenTreeForObjects;
 
 - (void)traverseTowardsRootUsingBlock:(EnumerationBlock)block;
-- (void)traverseDepthFirstTowardsLeaveUsingBlock:(EnumerationBlock)block;
-- (void)traverseBreadthFirstTowardsLeaveUsingBlock:(EnumerationBlock)block;
+- (void)traverseDepthFirstTowardsLeaveUsingBlock:(TraverseBlock)block;
+- (void)traverseBreadthFirstTowardsLeaveUsingBlock:(TraverseBlock)block;
 
 - (NSArray *)filterWithBlock:(FilterBlock)filterBlock;
 

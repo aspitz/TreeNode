@@ -445,26 +445,44 @@
     
     allNodes = @[self.root, self.child1, self.child2, self.child21, self.child3];
     nodes = [NSMutableArray array];
-    [self.root traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self.root traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         [nodes addObject:treeNode];
     }];
     STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root, child1, child2, child21]");
 
     allNodes = @[self.child2, self.child21];
     nodes = [NSMutableArray array];
-    [self.child2 traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self.child2 traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         [nodes addObject:treeNode];
     }];
     STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [child2, child21]");
 
     allNodes = @[self.root, self.child1];
     nodes = [NSMutableArray array];
-    [self.root traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self.root traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         NSString *string = (NSString *)treeNode.object;
         *stop = [string hasPrefix:@"node 1.1"];
         [nodes addObject:treeNode];
     }];
     STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root, child1] because 'stop' is set to true when object 'node 1.1'");
+
+    allNodes = @[self.root];
+    nodes = [NSMutableArray array];
+    [self.root traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
+        NSString *string = (NSString *)treeNode.object;
+        *stopTraversingBranch = [string hasPrefix:@"node 1"];
+        [nodes addObject:treeNode];
+    }];
+    STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root] because 'stopTraversingBranch' is set to true when object 'node 1'");
+
+    allNodes = @[self.root, self.child1, self.child2, self.child3];
+    nodes = [NSMutableArray array];
+    [self.root traverseDepthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
+        NSString *string = (NSString *)treeNode.object;
+        *stopTraversingBranch = [string hasPrefix:@"node 1.2"];
+        [nodes addObject:treeNode];
+    }];
+    STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root, child1, child2, child3] because 'stopTraversingBranch' is set to true when object 'node 1.2'");
 }
 
 - (void)testTraverseBreadthFirstTowardsLeaveUsingBlock{
@@ -473,21 +491,21 @@
     
     allNodes = @[self.root, self.child1, self.child2, self.child3, self.child21];
     nodes = [NSMutableArray array];
-    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         [nodes addObject:treeNode];
     }];
     STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root, child1, child2, child21]");
     
     allNodes = @[self.child2, self.child21];
     nodes = [NSMutableArray array];
-    [self.child2 traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self.child2 traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         [nodes addObject:treeNode];
     }];
     STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [child2, child21]");
     
     allNodes = @[self.root, self.child1, self.child2];
     nodes = [NSMutableArray array];
-    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         NSString *string = (NSString *)treeNode.object;
         *stop = [string hasPrefix:@"node 1.2"];
         [nodes addObject:treeNode];
@@ -496,12 +514,30 @@
 
     allNodes = @[self.root];
     nodes = [NSMutableArray array];
-    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         NSString *string = (NSString *)treeNode.object;
         *stop = [string hasPrefix:@"node 1"];
         [nodes addObject:treeNode];
     }];
     STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root] because 'stop' is set to true when object 'node 1'");
+
+    allNodes = @[self.root];
+    nodes = [NSMutableArray array];
+    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
+        NSString *string = (NSString *)treeNode.object;
+        *stopTraversingBranch = [string hasPrefix:@"node 1"];
+        [nodes addObject:treeNode];
+    }];
+    STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root] because 'stopTraversingBranch' is set to true when object 'node 1'");
+    
+    allNodes = @[self.root, self.child1, self.child2, self.child3];
+    nodes = [NSMutableArray array];
+    [self.root traverseBreadthFirstTowardsLeaveUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
+        NSString *string = (NSString *)treeNode.object;
+        *stopTraversingBranch = [string hasPrefix:@"node 1.2"];
+        [nodes addObject:treeNode];
+    }];
+    STAssertTrue([allNodes isEqualToArray:nodes], @"The enumerated tree should equal [root, child1, child2, child3] because 'stopTraversingBranch' is set to true when object 'node 1.2'");
 }
 
 - (void)testFilterWithBlock{

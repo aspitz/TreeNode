@@ -266,7 +266,7 @@
 - (NSArray *)flattenTree{
     NSMutableArray *flattenedTreeArray = [NSMutableArray array];
     
-    [self enumerateUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self enumerateUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         [flattenedTreeArray addObject:treeNode];
     }];
     
@@ -276,7 +276,7 @@
 - (NSArray *)flattenTreeForObjects{
     NSMutableArray *flattenedTreeArray = [NSMutableArray array];
     
-    [self enumerateUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self enumerateUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         if (treeNode.object != nil){
             [flattenedTreeArray addObject:treeNode.object];
         }
@@ -296,20 +296,26 @@
     } while (!stop && (node != nil));
 }
 
-- (void)traverseDepthFirstTowardsLeaveUsingBlock:(EnumerationBlock)block{
+- (void)traverseDepthFirstTowardsLeaveUsingBlock:(TraverseBlock)block{
     ZTreeNode *node = self;
     BOOL stop = NO;
+    BOOL stopTraversingBranch = NO;
     NSMutableArray *stack = [NSMutableArray array];
     
-    block(node, &stop);
+    block(node, &stop, &stopTraversingBranch);
     node = node.firstChild;    
     
-    if (!stop){
+    if (!stop && !stopTraversingBranch){
         do{
             if (node != nil){
                 [stack addObject:node];
-                block(node, &stop);
-                node = node.firstChild;
+                block(node, &stop, &stopTraversingBranch);
+                if (stopTraversingBranch){
+                    stopTraversingBranch = NO;
+                    node = nil;
+                } else {
+                    node = node.firstChild;
+                }
             } else {
                 node = [stack lastObject];
                 [stack removeLastObject];
@@ -319,9 +325,10 @@
     }
 }
 
-- (void)traverseBreadthFirstTowardsLeaveUsingBlock:(EnumerationBlock)block{
+- (void)traverseBreadthFirstTowardsLeaveUsingBlock:(TraverseBlock)block{
     ZTreeNode *node = self;
     BOOL stop = NO;
+    BOOL stopTraversingBranch = NO;
     NSMutableArray *queue = [NSMutableArray array];
     [queue addObject:self];
     
@@ -329,8 +336,12 @@
         node = queue[0];
         if (node != nil){
             [queue removeObjectAtIndex:0];
-            block(node, &stop);
-            [queue addObjectsFromArray:node.children];
+            block(node, &stop, &stopTraversingBranch);
+            if (stopTraversingBranch){
+                stopTraversingBranch = NO;
+            } else {
+                [queue addObjectsFromArray:node.children];
+            }
         }
     } while (!stop && (queue.count != 0));
 }
@@ -340,14 +351,14 @@
     [self traverseTowardsRootUsingBlock:block];
 }
 
-- (void)enumerateUsingBlock:(EnumerationBlock)block{
+- (void)enumerateUsingBlock:(TraverseBlock)block{
     [self traverseDepthFirstTowardsLeaveUsingBlock:block];
 }
 
 - (NSArray *)filterWithBlock:(FilterBlock)filterBlock{
     NSMutableArray *filteredTree = [NSMutableArray array];
     
-    [self enumerateUsingBlock:^(ZTreeNode *treeNode, BOOL *stop) {
+    [self enumerateUsingBlock:^(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch) {
         if (filterBlock(treeNode, stop)){
             [filteredTree addObject:treeNode];
         }
