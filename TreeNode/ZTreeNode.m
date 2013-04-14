@@ -8,6 +8,10 @@
 #import "ZTreeNode.h"
 #import "NSArray+Utilities.h"
 
+@interface ZTreeNode ()
+@property (nonatomic, strong) NSMutableArray *mutableChildren;
+@end
+
 @implementation ZTreeNode
 
 - (id)init{
@@ -32,8 +36,16 @@
 
 - (void)setupWithObject:(id)object{
     self.object = object;
-    _children = [NSMutableArray array];
     self.parent = nil;
+}
+
+#pragma mark - 
+
+- (NSMutableArray *)mutableChildren{
+    if (_mutableChildren == nil){
+        _mutableChildren = [NSMutableArray array];
+    }
+    return _mutableChildren;
 }
 
 #pragma mark - NSCoding
@@ -46,7 +58,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder{
-    [encoder encodeObject:_children forKey:@"Children"];
+    [encoder encodeObject:self.mutableChildren forKey:@"Children"];
     [encoder encodeObject:self.object forKey:@"Object"];
 }
 
@@ -75,7 +87,7 @@
     // set the parent of the new node to the parent of this node
     node.parent = self.parent;
     // copy all the children of this node
-    [node addChildren:[_children copy]];
+    [node addChildren:[self.mutableChildren copy]];
     return node;
 }
 
@@ -86,7 +98,7 @@
 }
 
 - (BOOL)isLeaf{
-    return ([_children count] == 0);
+    return ([self.mutableChildren count] == 0);
 }
 
 #pragma mark - Root
@@ -133,18 +145,18 @@
 #pragma mark - Node manipulation methods
 
 - (BOOL)hasChildren{
-    return (_children.count != 0);
+    return (self.mutableChildren.count != 0);
 }
 
 - (NSArray *)children{
-    return _children;
+    return self.mutableChildren;
 }
 
 - (id)firstChild{
     ZTreeNode *child = nil;
     
-    if ([_children isNotEmpty]){
-        child = _children[0];
+    if ([self.mutableChildren isNotEmpty]){
+        child = self.mutableChildren[0];
     }
     
     return child;
@@ -162,7 +174,7 @@
 
 - (void)addChild:(ZTreeNode *)child{
     if (child != nil){
-        [_children addObject:child];
+        [self.mutableChildren addObject:child];
         child.parent = self;
     }
 }
@@ -175,26 +187,26 @@
 
 - (void)insertChild:(ZTreeNode *)child atIndex:(NSUInteger)index{
     if (child != nil){
-        [_children insertObject:child atIndex:index];
+        [self.mutableChildren insertObject:child atIndex:index];
         child.parent = self;
     }
 }
 
 - (void)removeChild:(ZTreeNode *)child{
-    [_children removeObject:child];
+    [self.mutableChildren removeObject:child];
     child.parent = nil;
 }
 
 - (void)removeChildAIndex:(NSUInteger)index{
-    if (index < _children.count){
-        [_children removeObjectAtIndex:index];
+    if (index < self.mutableChildren.count){
+        [self.mutableChildren removeObjectAtIndex:index];
     }
 }
 
 - (ZTreeNode *)childAtIndex:(NSUInteger)index{
     ZTreeNode *node = nil;
-    if (index < _children.count){
-        node = [_children objectAtIndex:index];
+    if (index < self.mutableChildren.count){
+        node = [self.mutableChildren objectAtIndex:index];
     }
     return node;
 }
@@ -229,7 +241,7 @@
 - (void)removeObject:(id)object{
     ZTreeNode *removeZTreeNode = nil;
     
-    for (ZTreeNode *treeNode in _children){
+    for (ZTreeNode *treeNode in self.mutableChildren){
         if (treeNode.object == object){
             removeZTreeNode = treeNode;
             break;
@@ -257,7 +269,7 @@
 
 - (void)setObject:(id)anObject atIndexedSubscript:(NSUInteger)index{
     ZTreeNode *treeNode = anObject;
-    _children[index] = treeNode;
+    self.mutableChildren[index] = treeNode;
     treeNode.parent = self;
 }
 
@@ -376,7 +388,7 @@
         return nil;
     } else {
         ZTreeNode *treeNode = nil;
-        for (ZTreeNode *child in _children){
+        for (ZTreeNode *child in self.mutableChildren){
             treeNode = [child treeNodeForObject:object];
             if (treeNode != nil){
                 break;

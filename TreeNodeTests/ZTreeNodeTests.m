@@ -138,7 +138,7 @@
     STAssertFalse(self.child21.hasChildren, @"'child21' should not have children");
 }
 
-- (void)testChildren{
+- (void)tesChildren{
     NSArray *children = nil;
     
     children = @[self.child1, self.child2, self.child3];

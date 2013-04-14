@@ -12,9 +12,7 @@ typedef BOOL(^FilterBlock)(ZTreeNode *treeNode, BOOL *stop);
 typedef void(^EnumerationBlock)(ZTreeNode *treeNode, BOOL *stop);
 typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversingBranch);
 
-@interface ZTreeNode : NSObject <NSCopying, NSCoding>{
-    NSMutableArray *_children;
-}
+@interface ZTreeNode : NSObject <NSCopying, NSCoding>
 
 @property (nonatomic, weak) ZTreeNode *parent;
 @property (nonatomic, strong) id<NSCoding> object;
