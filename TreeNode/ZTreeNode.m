@@ -31,7 +31,7 @@
 }
 
 + (id)treeNodeWithObject:(id)object{
-    return [[ZTreeNode alloc]initWithObject:object];
+    return [[self alloc]initWithObject:object];
 }
 
 - (void)setupWithObject:(id)object{

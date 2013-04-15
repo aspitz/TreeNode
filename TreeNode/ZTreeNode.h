@@ -16,6 +16,7 @@ typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversi
 
 @property (nonatomic, weak) ZTreeNode *parent;
 @property (nonatomic, strong) id<NSCoding> object;
+@property (nonatomic, readonly) NSArray *children;
 
 - (id)initWithObject:(id)object;
 + (id)treeNodeWithObject:(id)object;
@@ -33,7 +34,6 @@ typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversi
 - (ZTreeNode *)root;
 
 - (BOOL)hasChildren;
-- (NSArray *)children;
 - (id)firstChild;
 - (id)nextSibling;
 
