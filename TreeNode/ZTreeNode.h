@@ -15,12 +15,15 @@ typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversi
 @interface ZTreeNode : NSObject <NSCopying, NSCoding>
 
 @property (nonatomic, readonly) ZTreeNode *parent;
-@property (nonatomic, strong) id<NSCoding> object;
+@property (nonatomic, strong) id object;
 @property (nonatomic, readonly) NSArray *children;
 
 - (id)initWithObject:(id)object;
 + (id)treeNodeWithObject:(id)object;
 
+- (id)initWithTreeNode:(ZTreeNode*)treeNode copyObjects:(BOOL)copyObjects;
++ (id)treeNodeWithTreeNode:(ZTreeNode *)treeNode copyObjects:(BOOL)copyObjects;
+    
 - (NSData *)toData;
 + (ZTreeNode *)treeNodeWithData:(NSData *)data;
 
@@ -65,6 +68,6 @@ typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversi
 
 - (ZTreeNode *)treeNodeForObject:(id)object;
 
-- (BOOL)isEqualToZTreeNode:(ZTreeNode *)treeNode withObjectComparator:(NSComparator)comparator;
+- (BOOL)isEqualToTreeNode:(ZTreeNode *)treeNode withObjectComparator:(NSComparator)comparator;
 
 @end

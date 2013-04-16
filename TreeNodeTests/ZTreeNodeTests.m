@@ -55,7 +55,7 @@
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.root];
     ZTreeNode *root = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
-    STAssertTrue([self.root isEqualToZTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
+    STAssertTrue([self.root isEqualToTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
         NSString *string1 = obj1;
         NSString *string2 = obj2;
         return [string1 compare:string2];
@@ -66,7 +66,7 @@
     NSData *data = [self.root toData];
     ZTreeNode *root = [ZTreeNode treeNodeWithData:data];
     
-    STAssertTrue([self.root isEqualToZTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
+    STAssertTrue([self.root isEqualToTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
         NSString *string1 = obj1;
         NSString *string2 = obj2;
         return [string1 compare:string2];
@@ -75,11 +75,10 @@
 
 - (void)testCopyWithZone{
     ZTreeNode *root = [self.root copy];
-    STAssertTrue([self.root isEqualToZTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSString *string1 = obj1;
-        NSString *string2 = obj2;
-        return [string1 compare:string2];
-    }], @"the two treeNodes should be the same since one is a copy of the other");
+    STAssertEqualObjects(self.root.object, root.object, @"the two treeNodes should be pointing to the same object since one is a copy of the other");
+    STAssertTrue([self.root.children count] != [root.children count], @"the two treeNodes should not have the same number of children since one is a shallow copy of the other");
+    STAssertFalse(self.root.parent != root.parent, @"the two treeNodes should not have the same parent since one is a shallow copy of the other");
+    STAssertNil(root.parent, @"the copy should have a nil parent since it's a shallow copy of the other");
 }
 
 
@@ -593,7 +592,7 @@
     [root addChild:child3];
     [child2 addChild:child21];
     
-    STAssertTrue([self.root isEqualToZTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
+    STAssertTrue([self.root isEqualToTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
         NSString *string1 = obj1;
         NSString *string2 = obj2;
         return [string1 compare:string2];
@@ -610,7 +609,7 @@
     [root addChild:child3];
     [child1 addChild:child21];
     
-    STAssertFalse([self.root isEqualToZTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
+    STAssertFalse([self.root isEqualToTreeNode:root withObjectComparator:^NSComparisonResult(id obj1, id obj2) {
         NSString *string1 = obj1;
         NSString *string2 = obj2;
         return [string1 compare:string2];

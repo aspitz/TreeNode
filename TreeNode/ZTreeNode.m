@@ -32,12 +32,37 @@
 }
 
 + (id)treeNodeWithObject:(id)object{
-    return [[self alloc]initWithObject:object];
+    return [[[self class] alloc]initWithObject:object];
 }
 
 - (void)setupWithObject:(id)object{
     self.object = object;
     self.mutableParent = nil;
+}
+
+#pragma mark - deep node copying
+//todo: create unit test for this code
+- (id)initWithTreeNode:(ZTreeNode*)treeNode copyObjects:(BOOL)copyObjects{
+    id object = nil;
+    if (copyObjects){
+        if ([self.object respondsToSelector:@selector(copyWithZone:)]){
+            object = [self.object copy];
+        }
+    } else {
+        object = self.object;
+    }
+    
+    ZTreeNode *treeNodeCopy = [[self class] treeNodeWithObject:object];
+    [self.children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
+        [treeNodeCopy addChild:[[self class] treeNodeWithTreeNode:childTreeNode copyObjects:copyObjects]];
+    }];
+    
+    return treeNodeCopy;
+}
+
+//todo: create unit test for this code
++ (id)treeNodeWithTreeNode:(ZTreeNode *)treeNode copyObjects:(BOOL)copyObjects{
+    return [[[self class] alloc]initWithTreeNode:treeNode copyObjects:copyObjects];
 }
 
 #pragma mark - 
@@ -60,7 +85,10 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeObject:self.mutableChildren forKey:@"Children"];
-    [encoder encodeObject:self.object forKey:@"Object"];
+    // only encode the 'object' if it supports 'encodeWithCoder:'
+    if ([self.object respondsToSelector:@selector(encodeWithCoder:)]){
+        [encoder encodeObject:self.object forKey:@"Object"];
+    }
 }
 
 - (NSData *)toData{
@@ -82,14 +110,9 @@
 
 #pragma mark - NSCopying
 
+// shallow copy - only copy self. we don't copy self.object
 - (id)copyWithZone:(NSZone *)zone{
-    // create a new node with the same object
-    ZTreeNode *node = [[[self class]allocWithZone:zone]initWithObject:self.object];
-    // set the parent of the new node to the parent of this node
-    node.mutableParent = self.parent;
-    // copy all the children of this node
-    [node addChildren:[self.mutableChildren copy]];
-    return node;
+    return [[[self class]allocWithZone:zone]initWithObject:self.object];
 }
 
 #pragma mark - Node type methods
@@ -405,7 +428,7 @@
 
 #pragma mark - Equality
 
-- (BOOL)isEqualToZTreeNode:(ZTreeNode *)treeNode withObjectComparator:(NSComparator)comparator{
+- (BOOL)isEqualToTreeNode:(ZTreeNode *)treeNode withObjectComparator:(NSComparator)comparator{
     // check to see if the objects of the two nodes are the same
     if (comparator(self.object, treeNode.object) != NSOrderedSame){
         return NO;
@@ -421,7 +444,7 @@
         ZTreeNode *child = obj;
         ZTreeNode *otherChild = treeNode[idx];
         
-        equal = [child isEqualToZTreeNode:otherChild withObjectComparator:comparator];
+        equal = [child isEqualToTreeNode:otherChild withObjectComparator:comparator];
         *stop = !equal;
     }];
     
