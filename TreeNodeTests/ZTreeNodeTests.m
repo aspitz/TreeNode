@@ -155,6 +155,12 @@
     STAssertEqualObjects(self.child21.firstChild, nil, @"the first child of 'child21' should be nil since it doesn't have any children");
 }
 
+- (void)testLastChild{
+    STAssertEqualObjects(self.root.lastChild, self.child3, @"'child3' is the last child of root");
+    STAssertEqualObjects(self.child2.lastChild, self.child21, @"'child21' is the last child of 'child2'");
+    STAssertEqualObjects(self.child21.lastChild, nil, @"the last child of 'child21' should be nil since it doesn't have any children");
+}
+
 - (void)testNextSibling{
     STAssertEqualObjects(self.root.nextSibling, nil, @"the next sibling of root should be nil, since it's the root");
     STAssertEqualObjects(self.child1.nextSibling, self.child2, @"the next sibling of 'child1' should be 'child2'");
@@ -290,6 +296,28 @@
     allNodes = @[root, child2, child21];
     nodes = [root flattenTree];
     STAssertTrue([allNodes isEqualToArray:nodes], @"The flatten tree should equal [root, child2, child21]");
+}
+
+- (void)testRemoveChildren{
+    STAssertNoThrow([self.root removeChildren:nil], @"nothing should happen if the user tries to remove a nil array of children");
+    
+    [self.root removeChildren:@[self.child1, self.child3]];
+    STAssertTrue([self.root hasChildren], @"root should have a child since we removed all but one");
+    STAssertTrue([[self.root children]count] == 1, @"root should have a child since we removed all but one");
+    
+    STAssertNil(self.child1.parent, @"'child1' should not have a parent anymore since we removed it from the parent");
+    STAssertNil(self.child3.parent, @"'child3' should not have a parent anymore since we removed it from the parent");
+
+    STAssertTrue(self.child2.parent == self.root, @"'child2' should have a parent, root");
+}
+
+- (void)testRemoveAllChildren{
+    [self.root removeAllChildren];
+    STAssertFalse([self.root hasChildren], @"root should not have any children since we just removed them all");
+    
+    STAssertNil(self.child1.parent, @"'child1' should not have a parent anymore since we removed it from the parent");
+    STAssertNil(self.child2.parent, @"'child2' should not have a parent anymore since we removed it from the parent");
+    STAssertNil(self.child3.parent, @"'child3' should not have a parent anymore since we removed it from the parent");
 }
 
 - (void)testChildAtIndex{

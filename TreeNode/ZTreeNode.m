@@ -190,7 +190,6 @@
     return child;
 }
 
-//todo: create unit test for this code
 - (id)lastChild{
     return [self.children lastObject];
 }
@@ -236,17 +235,15 @@
     }
 }
 
-//todo: create unit test for this code
 - (void)removeChildren:(NSArray *)children{
     // make sure that every child to be removed is no longer pointing to parent
-    [self.children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
+    [children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
         childTreeNode.mutableParent = nil;
     }];
     
     [self.mutableChildren removeObjectsInArray:children];
 }
 
-//todo: create unit test for this code
 - (void)removeAllChildren{
     // make sure that every child to be removed is no longer pointing to parent
     [self.children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
