@@ -38,6 +38,7 @@ typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversi
 
 - (BOOL)hasChildren;
 - (id)firstChild;
+- (id)lastChild;
 - (id)nextSibling;
 
 - (void)insertChild:(ZTreeNode *)child atIndex:(NSUInteger)index;
@@ -45,6 +46,8 @@ typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversi
 - (void)addChildren:(NSArray *)childArray;
 - (void)removeChild:(ZTreeNode *)child;
 - (void)removeChildAIndex:(NSUInteger)index;
+- (void)removeChildren:(NSArray *)children;
+- (void)removeAllChildren;
 - (ZTreeNode *)childAtIndex:(NSUInteger)index;
 - (ZTreeNode *)treeNodeAtIndexPath:(NSIndexPath *)indexPath;
 

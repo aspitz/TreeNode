@@ -183,11 +183,16 @@
 - (id)firstChild{
     ZTreeNode *child = nil;
     
-    if ([self.mutableChildren isNotEmpty]){
-        child = self.mutableChildren[0];
+    if ([self.children isNotEmpty]){
+        child = self.children[0];
     }
     
     return child;
+}
+
+//todo: create unit test for this code
+- (id)lastChild{
+    return [self.children lastObject];
 }
 
 - (id)nextSibling{
@@ -229,6 +234,27 @@
     if (index < self.mutableChildren.count){
         [self.mutableChildren removeObjectAtIndex:index];
     }
+}
+
+//todo: create unit test for this code
+- (void)removeChildren:(NSArray *)children{
+    // make sure that every child to be removed is no longer pointing to parent
+    [self.children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
+        childTreeNode.mutableParent = nil;
+    }];
+    
+    [self.mutableChildren removeObjectsInArray:children];
+}
+
+//todo: create unit test for this code
+- (void)removeAllChildren{
+    // make sure that every child to be removed is no longer pointing to parent
+    [self.children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
+        childTreeNode.mutableParent = nil;
+    }];
+    
+    // remove all the children
+    [self.mutableChildren removeAllObjects];
 }
 
 - (ZTreeNode *)childAtIndex:(NSUInteger)index{
