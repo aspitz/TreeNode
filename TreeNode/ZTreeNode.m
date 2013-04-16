@@ -9,6 +9,7 @@
 #import "NSArray+Utilities.h"
 
 @interface ZTreeNode ()
+@property (nonatomic, weak) ZTreeNode *mutableParent;
 @property (nonatomic, strong) NSMutableArray *mutableChildren;
 @end
 
@@ -36,7 +37,7 @@
 
 - (void)setupWithObject:(id)object{
     self.object = object;
-    self.parent = nil;
+    self.mutableParent = nil;
 }
 
 #pragma mark - 
@@ -85,7 +86,7 @@
     // create a new node with the same object
     ZTreeNode *node = [[[self class]allocWithZone:zone]initWithObject:self.object];
     // set the parent of the new node to the parent of this node
-    node.parent = self.parent;
+    node.mutableParent = self.parent;
     // copy all the children of this node
     [node addChildren:[self.mutableChildren copy]];
     return node;
@@ -109,6 +110,10 @@
         node = node.parent;
     }
     return node;
+}
+
+- (ZTreeNode *)parent{
+    return self.mutableParent;
 }
 
 #pragma mark - Node location methods
@@ -175,7 +180,7 @@
 - (void)addChild:(ZTreeNode *)child{
     if (child != nil){
         [self.mutableChildren addObject:child];
-        child.parent = self;
+        child.mutableParent = self;
     }
 }
 
@@ -188,13 +193,13 @@
 - (void)insertChild:(ZTreeNode *)child atIndex:(NSUInteger)index{
     if (child != nil){
         [self.mutableChildren insertObject:child atIndex:index];
-        child.parent = self;
+        child.mutableParent = self;
     }
 }
 
 - (void)removeChild:(ZTreeNode *)child{
     [self.mutableChildren removeObject:child];
-    child.parent = nil;
+    child.mutableParent = nil;
 }
 
 - (void)removeChildAIndex:(NSUInteger)index{
@@ -270,7 +275,7 @@
 - (void)setObject:(id)anObject atIndexedSubscript:(NSUInteger)index{
     ZTreeNode *treeNode = anObject;
     self.mutableChildren[index] = treeNode;
-    treeNode.parent = self;
+    treeNode.mutableParent = self;
 }
 
 #pragma mark - Tree flattening methods

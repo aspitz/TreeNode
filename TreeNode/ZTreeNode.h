@@ -14,7 +14,7 @@ typedef void(^TraverseBlock)(ZTreeNode *treeNode, BOOL *stop, BOOL *stopTraversi
 
 @interface ZTreeNode : NSObject <NSCopying, NSCoding>
 
-@property (nonatomic, weak) ZTreeNode *parent;
+@property (nonatomic, readonly) ZTreeNode *parent;
 @property (nonatomic, strong) id<NSCoding> object;
 @property (nonatomic, readonly) NSArray *children;
 
