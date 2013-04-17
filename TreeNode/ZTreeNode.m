@@ -9,7 +9,7 @@
 #import "NSArray+Utilities.h"
 
 @interface ZTreeNode ()
-@property (nonatomic, weak) ZTreeNode *mutableParent;
+@property (nonatomic, weak) ZTreeNode *parent;
 @property (nonatomic, strong) NSMutableArray *mutableChildren;
 @end
 
@@ -37,7 +37,7 @@
 
 - (void)setupWithObject:(id)object{
     self.object = object;
-    self.mutableParent = nil;
+    self.parent = nil;
 }
 
 #pragma mark - deep node copying
@@ -135,10 +135,6 @@
     return node;
 }
 
-- (ZTreeNode *)parent{
-    return self.mutableParent;
-}
-
 #pragma mark - Node location methods
 - (NSUInteger)depth{
     if ([self isRoot]){
@@ -207,7 +203,7 @@
 - (void)addChild:(ZTreeNode *)child{
     if (child != nil){
         [self.mutableChildren addObject:child];
-        child.mutableParent = self;
+        child.parent = self;
     }
 }
 
@@ -220,13 +216,13 @@
 - (void)insertChild:(ZTreeNode *)child atIndex:(NSUInteger)index{
     if (child != nil){
         [self.mutableChildren insertObject:child atIndex:index];
-        child.mutableParent = self;
+        child.parent = self;
     }
 }
 
 - (void)removeChild:(ZTreeNode *)child{
     [self.mutableChildren removeObject:child];
-    child.mutableParent = nil;
+    child.parent = nil;
 }
 
 - (void)removeChildAIndex:(NSUInteger)index{
@@ -238,7 +234,7 @@
 - (void)removeChildren:(NSArray *)children{
     // make sure that every child to be removed is no longer pointing to parent
     [children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
-        childTreeNode.mutableParent = nil;
+        childTreeNode.parent = nil;
     }];
     
     [self.mutableChildren removeObjectsInArray:children];
@@ -247,7 +243,7 @@
 - (void)removeAllChildren{
     // make sure that every child to be removed is no longer pointing to parent
     [self.children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
-        childTreeNode.mutableParent = nil;
+        childTreeNode.parent = nil;
     }];
     
     // remove all the children
@@ -321,7 +317,7 @@
 - (void)setObject:(id)anObject atIndexedSubscript:(NSUInteger)index{
     ZTreeNode *treeNode = anObject;
     self.mutableChildren[index] = treeNode;
-    treeNode.mutableParent = self;
+    treeNode.parent = self;
 }
 
 #pragma mark - Tree flattening methods
