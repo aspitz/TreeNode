@@ -12,4 +12,7 @@
 
 + (NSIndexPath *)indexPathFromArray:(NSArray *)pathArray;
 
+- (NSArray *)toArray;
+- (NSString *)string;
+
 @end

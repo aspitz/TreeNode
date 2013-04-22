@@ -17,7 +17,7 @@
 		79ABEC3C1716732700BD5446 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79ABEC3B1716732700BD5446 /* Default@2x.png */; };
 		79ABEC3E1716732700BD5446 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79ABEC3D1716732700BD5446 /* Default-568h@2x.png */; };
 		79ABEC411716732700BD5446 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79ABEC3F1716732700BD5446 /* MainStoryboard.storyboard */; };
-		79ABEC441716732700BD5446 /* ZViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC431716732700BD5446 /* ZViewController.m */; };
+		79ABEC441716732700BD5446 /* ZTreeNodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ABEC431716732700BD5446 /* ZTreeNodeViewController.m */; };
 		79ABEC4C1716732700BD5446 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79ABEC4B1716732700BD5446 /* SenTestingKit.framework */; };
 		79ABEC4D1716732700BD5446 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79ABEC271716732700BD5446 /* UIKit.framework */; };
 		79ABEC4E1716732700BD5446 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79ABEC291716732700BD5446 /* Foundation.framework */; };
@@ -56,8 +56,8 @@
 		79ABEC3B1716732700BD5446 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		79ABEC3D1716732700BD5446 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		79ABEC401716732700BD5446 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		79ABEC421716732700BD5446 /* ZViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZViewController.h; sourceTree = "<group>"; };
-		79ABEC431716732700BD5446 /* ZViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZViewController.m; sourceTree = "<group>"; };
+		79ABEC421716732700BD5446 /* ZTreeNodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZTreeNodeViewController.h; sourceTree = "<group>"; };
+		79ABEC431716732700BD5446 /* ZTreeNodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZTreeNodeViewController.m; sourceTree = "<group>"; };
 		79ABEC4A1716732700BD5446 /* TreeNodeTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TreeNodeTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		79ABEC4B1716732700BD5446 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		79ABEC531716732700BD5446 /* TreeNodeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TreeNodeTests-Info.plist"; sourceTree = "<group>"; };
@@ -132,8 +132,8 @@
 				79ABEC361716732700BD5446 /* ZAppDelegate.h */,
 				79ABEC371716732700BD5446 /* ZAppDelegate.m */,
 				79ABEC3F1716732700BD5446 /* MainStoryboard.storyboard */,
-				79ABEC421716732700BD5446 /* ZViewController.h */,
-				79ABEC431716732700BD5446 /* ZViewController.m */,
+				79ABEC421716732700BD5446 /* ZTreeNodeViewController.h */,
+				79ABEC431716732700BD5446 /* ZTreeNodeViewController.m */,
 				79ABEC69171673FC00BD5446 /* Models */,
 				79ABEC6A1716740D00BD5446 /* Categories */,
 				79ABEC2E1716732700BD5446 /* Supporting Files */,
@@ -307,7 +307,7 @@
 			files = (
 				79ABEC341716732700BD5446 /* main.m in Sources */,
 				79ABEC381716732700BD5446 /* ZAppDelegate.m in Sources */,
-				79ABEC441716732700BD5446 /* ZViewController.m in Sources */,
+				79ABEC441716732700BD5446 /* ZTreeNodeViewController.m in Sources */,
 				79ABEC641716733600BD5446 /* ZTreeNode.m in Sources */,
 				79ABEC6D1716741F00BD5446 /* NSArray+Utilities.m in Sources */,
 				79ABEC711716743900BD5446 /* NSIndexPath+Utilities.m in Sources */,
