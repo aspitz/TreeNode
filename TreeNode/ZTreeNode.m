@@ -202,7 +202,11 @@
 
 - (void)addChild:(ZTreeNode *)child{
     if (child != nil){
+        
+        NSIndexSet *indexSet =[NSIndexSet indexSetWithIndex:self.mutableChildren.count];
+        [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"children"];
         [self.mutableChildren addObject:child];
+        [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"children"];
         child.parent = self;
     }
 }
@@ -215,29 +219,43 @@
 
 - (void)insertChild:(ZTreeNode *)child atIndex:(NSUInteger)index{
     if (child != nil){
+        NSIndexSet *indexSet =[NSIndexSet indexSetWithIndex:index];
+        [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"children"];
         [self.mutableChildren insertObject:child atIndex:index];
+        [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"children"];
         child.parent = self;
     }
 }
 
 - (void)removeChild:(ZTreeNode *)child{
-    [self.mutableChildren removeObject:child];
-    child.parent = nil;
+    NSUInteger index = [self.mutableChildren indexOfObject:child];
+    [self removeChildAIndex:index];
 }
 
 - (void)removeChildAIndex:(NSUInteger)index{
     if (index < self.mutableChildren.count){
+        ZTreeNode *child = self.mutableChildren[index];
+        NSIndexSet *indexSet =[NSIndexSet indexSetWithIndex:index];
+        [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"children"];
         [self.mutableChildren removeObjectAtIndex:index];
+        child.parent = nil;
+        [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"children"];
     }
 }
 
 - (void)removeChildren:(NSArray *)children{
-    // make sure that every child to be removed is no longer pointing to parent
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
     [children enumerateObjectsUsingBlock:^(ZTreeNode *childTreeNode, NSUInteger idx, BOOL *stop) {
-        childTreeNode.parent = nil;
+        NSUInteger index = [self.mutableChildren indexOfObject:childTreeNode];
+        if (index != NSNotFound){
+            [indexSet addIndex:index];
+            childTreeNode.parent = nil;
+        }
     }];
     
-    [self.mutableChildren removeObjectsInArray:children];
+    [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"children"];
+    [self.mutableChildren removeObjectsAtIndexes:indexSet];
+    [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"children"];
 }
 
 - (void)removeAllChildren{
@@ -247,7 +265,10 @@
     }];
     
     // remove all the children
+    NSIndexSet *indexSet =[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.mutableChildren.count)];
+    [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"children"];
     [self.mutableChildren removeAllObjects];
+    [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"children"];
 }
 
 - (ZTreeNode *)childAtIndex:(NSUInteger)index{
@@ -484,5 +505,12 @@
     
     return description;
 }
+
+#pragma mark - Manual KVO methods
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key{
+    return (![key isEqualToString:@"children"]);
+}
+
 
 @end

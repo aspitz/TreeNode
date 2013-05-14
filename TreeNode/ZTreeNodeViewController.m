@@ -10,7 +10,40 @@
 #import "ZTreeNode.h"
 #import "NSIndexPath+Utilities.h"
 
+@interface ZTreeNodeViewController ()
+@property (nonatomic, strong) ZTreeNode *treeNode;
+
+@property (strong) UIBarButtonItem *addButton;
+@property (strong) UIBarButtonItem *editButton;
+@property (strong) UIBarButtonItem *doneButton;
+
+@property (assign) BOOL ignoreObservation;
+@property (assign, getter = isEditingTree) BOOL editTree;
+@end
+
 @implementation ZTreeNodeViewController
+
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)setup{
+    self.doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneEdit:)];
+    self.addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addChild:)];
+    self.editButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editChildren:)];
+}
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -20,6 +53,18 @@
     }
     
     self.title = self.treeNode.object;
+    
+    [self addObserver:self forKeyPath:@"self.treeNode.children" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    if (self.treeNode.isRoot){
+        self.navigationItem.leftBarButtonItem = self.editButton;
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 #pragma mark -
@@ -33,9 +78,18 @@
     }
     NSString *nodeName = [NSString stringWithFormat:@"Node: [%@]", [treeIndexPath string]];
     [self.treeNode addObject:nodeName];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowCount inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+}
+
+- (IBAction)editChildren:(id)sender{
+    [self.tableView setEditing:YES animated:YES];
+    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.leftBarButtonItem = self.doneButton;
+}
+
+- (IBAction)doneEditing:(id)sender{
+    [self.tableView setEditing:NO animated:YES];
+    self.navigationItem.rightBarButtonItem = self.addButton;
+    self.navigationItem.leftBarButtonItem = self.editButton;
 }
 
 #pragma mark - UITableViewDataSource Methods
@@ -67,9 +121,21 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete){
         [self.treeNode removeChildAIndex:indexPath.row];
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     }
     
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath{
+    id child = self.treeNode[fromIndexPath.row];
+    
+    self.ignoreObservation = YES;
+    [self.treeNode removeChildAIndex:fromIndexPath.row];
+    [self.treeNode insertChild:child atIndex:toIndexPath.row];
+    self.ignoreObservation = NO;
 }
 
 #pragma mark - UITableViewDelegate Methods
@@ -82,6 +148,24 @@
         ZTreeNodeViewController *zTreeNodeViewController = [segue destinationViewController];
         zTreeNodeViewController.treeNode = [self.treeNode childAtIndex:selectedRowIndex.row];
         [self.tableView deselectRowAtIndexPath:selectedRowIndex animated:YES];
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    NSUInteger changeKind = [change[NSKeyValueChangeKindKey] intValue];
+    NSIndexSet *indexSet = change[NSKeyValueChangeIndexesKey];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:indexSet.firstIndex inSection:0];
+    
+    if (!self.ignoreObservation){
+        if ([keyPath isEqualToString:@"self.treeNode.children"]){
+            if (changeKind == NSKeyValueChangeInsertion){
+                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+            } else if (changeKind == NSKeyValueChangeRemoval){
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            }
+        }
     }
 }
 

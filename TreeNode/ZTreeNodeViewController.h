@@ -13,8 +13,10 @@
 @interface ZTreeNodeViewController : UIViewController <UITableViewDataSource>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) ZTreeNode *treeNode;
 
 - (IBAction)addChild:(id)sender;
+
+- (IBAction)editChildren:(id)sender;
+- (IBAction)doneEditing:(id)sender;
 
 @end
